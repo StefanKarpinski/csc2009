@@ -18,18 +18,15 @@ University of California, Santa Barbara \vspace{0.35em}\\
 \begin{document}
 \maketitle
 
-Mixture models express one probability density as a convex combination of other probability distributions:
+Mixture modeling expresses probability densities as convex combinations of constituent probability distributions:
 \begin{align}
-  q(x) = \sum w_i p_i(x).
+  q(x) = \sum_{i=1}^n w_i p_i(x).
 \end{align}
-The constituent density functions, $p_i$, may be taken from a finite set of known distributions, or more commonly a class of parametric distributions on the event space.
-In such settings, there are well-established algorithms, such as expectation minimization (\caps{EM}), that can optimally recover the weights, $w_i$ for an observed sample of values from $q$.
+The constituent density functions, $p_i$, may be taken from a finite set of known distributions, or more commonly a class of parametric distributions.
+In such settings, there are well-established algorithms, such as expectation minimization (\caps{EM}), that can optimally recover the weights, $w_i$, for an observed sample of values from $q$.
 
-In certain settings, however, even when a mixture model may be appropriate, the constituent distributions are neither known in advance, nor can they be assumed to be parametric.
-In this work, we demonstrate how recent work on nonnegative matrix factorization can be used to effectively recover discrete mixture models without parametric assumptions on the constituent distributions.
-The restriction that distributions be restricted to discrete event spaces is not overly onerous, since continuous variables can be quantized, and typically are quantized in practice in any case.
-
-
+In certain settings, however, mixture modeling is desirable, but the constituent distributions are neither known in advance, nor can they be assumed to be parametric.
+In this work, we demonstrate how nonnegative matrix factorization (\caps{NMF}) can be effectively used to simultaneously recover weights and non-parametric constituent distributions, starting only from a large collection of variably-sized samples from unknown mixtures.
+% Our work addresses mixture models over discrete event spaces, but can be applied readily to continuous spaces, since continuous quantities can be discretized, and our techniques then applied to the resulting large discrete spaces. Since our approach makes no parametric assumptions, the results are no less valid.
 
 \end{document}
-
