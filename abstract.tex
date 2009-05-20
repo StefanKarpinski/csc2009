@@ -1,0 +1,35 @@
+\documentclass[conference]{IEEEtran}
+
+\newcommand{\thetitle}{Non-Parametric Discrete Mixture Model Recovery with Nonnegative Matrix Factorization}
+
+\input{packages}
+\input{definitions}
+
+\title{\vspace{-0.25em}\thetitle}
+\author{
+{\large{Stefan~Karpinski, John~R.~Gilbert, Elizabeth~M.~Belding}} \vspace{0.25em}\\
+Department of Computer Science \\
+University of California, Santa Barbara \vspace{0.35em}\\
+\textit{\{sgk,gilbert,ebelding\}@cs.ucsb.edu}
+}
+
+\graphicspath{{graphics/}}
+
+\begin{document}
+\maketitle
+
+Mixture models express one probability density as a convex combination of other probability distributions:
+\begin{align}
+  q(x) = \sum w_i p_i(x).
+\end{align}
+The constituent density functions, $p_i$, may be taken from a finite set of known distributions, or more commonly a class of parametric distributions on the event space.
+In such settings, there are well-established algorithms, such as expectation minimization (\caps{EM}), that can optimally recover the weights, $w_i$ for an observed sample of values from $q$.
+
+In certain settings, however, even when a mixture model may be appropriate, the constituent distributions are neither known in advance, nor can they be assumed to be parametric.
+In this work, we demonstrate how recent work on nonnegative matrix factorization can be used to effectively recover discrete mixture models without parametric assumptions on the constituent distributions.
+The restriction that distributions be restricted to discrete event spaces is not overly onerous, since continuous variables can be quantized, and typically are quantized in practice in any case.
+
+
+
+\end{document}
+
