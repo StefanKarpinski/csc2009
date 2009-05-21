@@ -40,17 +40,15 @@ The problem of inferring both the weights, $w_{ij}$, and constituent distributio
 All three matrices are constrined to be row-stochastic, meaning that all entries are nonnegative, with rows summing to unity.
 
 The problem of finding such a factorization is known as nonnegative matrix factorization.
-Since a variety of \caps{NMF} algorithms have been proposed, this problem is at least partially solved.
-Here are some of the difficulties which remain:
-\begin{itemize}
+Such factorizations are not unique, so perfect recovery of $W$ and $P$ cannot generally be achieved.
+On the other hand, any exact factorization of $Q$, is an equally valid mixture model for the given data.
+Since a variety of \caps{NMF} algorithms have been proposed, this problem is partially solved.
+Several difficulties remain, however:
+\begin{enumerate}
   \item $Q$ is not known exactly, only a finite sample for each distribution row of $Q$ is observed;
   \item The samples for the rows may not have uniform size;
-  \item \caps{NMF} is known to be \caps{NP}-hard; thus, all efficient algorithms are merely heuristic, and may or may not yield acceptable results in this setting.
-\end{itemize}
-
-% The problem of finding nonnegative factors for a given nonnegative matrix is known as nonnegative matrix factorization.
-
-% This problem does not, in general, have a unique solution, so perfect recovery of $W$ and $P$ cannot, without further constraints, be achieved.
-% On the other hand, any exact factorization of $Q$, is an equally valid mixture model for the given data.
+  \item \caps{NMF} is known to be \caps{NP}-hard; thus, all efficient algorithms are merely heuristic, and may not yield adequate results.
+\end{enumerate}
+This list is not exhaustive, and we will address and discuss several further difficulties.
 
 \end{document}
