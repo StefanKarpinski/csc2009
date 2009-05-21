@@ -36,7 +36,13 @@ Letting $Q_{ik} = q_i(k)$, $W_{ij} = w_{ij}$, and $P_{jk} = p_j(k)$ we have:
   Q = WP.
 \end{align}
 % The matrices are all be row-stochastic.
-The problem of inferring both the weights, $w_{ij}$, and constituent distributions, $p_j$, from a collection of mixtures, $q_i$, is equivalent to finding the factors $W$ and $P$ given $Q$.
+The problem of inferring both the weights, $w_{ij}$, and constituent distributions, $p_j$, from a collection of mixtures, $q_i$, is equivalent to finding the factors $W$ and $P$ given only $Q$.
 The problem constrains all three matrices to be row-stochastic, meaning that all entries are nonnegative, with rows summing to unity.
+The problem of finding such a factorization for a given $Q$, is known as nonnegative matrix factorization.
+
+% The problem of finding nonnegative factors for a given nonnegative matrix is known as nonnegative matrix factorization.
+
+% This problem does not, in general, have a unique solution, so perfect recovery of $W$ and $P$ cannot, without further constraints, be achieved.
+% On the other hand, any exact factorization of $Q$, is an equally valid mixture model for the given data.
 
 \end{document}
