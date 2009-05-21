@@ -51,17 +51,17 @@ Several difficulties remain, however:
 \end{enumerate}
 This list is not exhaustive, and we will address and discuss several further difficulties.
 
-Our motivating application is mixture modeling for network flow traces, whose distributions of packet sizes and inter-packet intervals (as well as other parameters), can be effectively modeled as discrete mixture models, using \caps{NMF}~\cite{Karpinski:2008}.
+Our motivating application is mixture modeling for traces of network flows, whose distributions of packet sizes and inter-packet intervals (as well as other parameters), can be effectively modeled as discrete mixture models, using \caps{NMF}~\cite{Karpinski:2008}.
 In this setting, there are several particularly challenging aspects:
 \begin{enumerate}
-  \item The distribution of sample sizes is heavy-tailed, having few very large samples, and many very small samples, with most flows having only one to three packets.
-  \item The constituent distributions are not uniformly represented: the most prevalent distribution is far more prevalent than the next, etc.; i.e. it is also heavy-tailed.
+  \item The distribution of sample sizes is heavy-tailed, having a few very large samples, and many very small samples, with most flows having only one to three packets.
+  \item The constituent distributions are not uniformly represented: the most prevalent distribution has much larger weights on average than the next, and so on.
 \end{enumerate}
 We will demonstrate using simulated data why both of these properties make factor recovery particularly difficult.
 
 For synthetic data, non-parametric constituent distributions are a set of saw-tooth patterns.
-These distributions are easy to identify visually, and are not well-approximated by any classical parametric distribution functions.
-The Pareto distribution is the standard heavy-tailed distribution, and has been shown to model the distribution of flow sizes in network traces by multiple studies.
+These distributions are easy to identify visually, and are not well-approximated by any standard parametric distribution functions.
+The Pareto distribution is the classic heavy-tailed distribution, and has been shown to describe the distribution of flow sizes in several network trace studies.
 Accordingly, the sample sizes for each synthetic mixture are Pareto distributed.
 Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto distributed.
 
