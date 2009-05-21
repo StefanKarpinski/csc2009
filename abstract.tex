@@ -51,4 +51,14 @@ Several difficulties remain, however:
 \end{enumerate}
 This list is not exhaustive, and we will address and discuss several further difficulties.
 
+Our motivating application is mixture modeling for network flow traces, whose distributions of packet sizes and inter-packet intervals (as well as other parameters), can be effectively modeled as discrete mixture models, using \caps{NMF}~\cite{Karpinski:2008}.
+In this setting, there are several particularly challenging aspects:
+\begin{enumerate}
+  \item The distribution of sample sizes is heavy-tailed, having few very large samples, and many very small samples, with most flows having only one to three packets.
+  \item The constituent distributions are not uniformly represented: the most prevalent distribution is far more prevalent than the next, etc.; i.e. it is also heavy-tailed.
+\end{enumerate}
+We will demonstrate using simulated data why both of these properties make factor recovery particularly difficult.
+
+% The first challenge is troubling because even if $Q$ can be factored exactly with small rank, if there are many small samples, the rank of the sample matrix, $S$, will be large, and its singular values will not 
+
 \end{document}
