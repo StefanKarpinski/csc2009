@@ -47,7 +47,7 @@ Several difficulties remain, however:
 \begin{enumerate}
   \item $Q$ is not known exactly, only a finite sample for each distribution row of $Q$ is observed;
   \item The samples for the rows may not have uniform size;
-  \item \caps{NMF} is known to be \caps{NP}-hard; thus, all efficient algorithms are merely heuristic, and may not yield adequate results.
+  \item \caps{NMF} is known to be \caps{NP}-hard; thus, all efficient algorithms are heuristic, and may not yield adequate results.
 \end{enumerate}
 This list is not exhaustive, and we will address and discuss several further difficulties.
 
@@ -59,11 +59,11 @@ In this setting, there are several particularly challenging aspects:
 \end{enumerate}
 We will demonstrate using simulated data why both of these properties make factor recovery particularly difficult.
 
-For synthetic data, non-parametric constituent distributions are a set of saw-tooth patterns.
-These distributions are easy to identify visually, and are not well-approximated by any standard parametric distribution functions.
+For synthetic data, we use saw-tooth patterns as constituent distributions.
+These distributions are visually distinctive, and not well-approximated by standard parametric distributions.
 The Pareto distribution is the classic heavy-tailed distribution, and has been shown to describe the distribution of flow sizes in several network trace studies.
-Accordingly, the sample sizes for each synthetic mixture are Pareto distributed.
-Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto distributed.
+Accordingly, we choose sample sizes for each synthetic mixture from a Pareto distribution.
+Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed.
 
 % The first challenge is troubling because even if $Q$ can be factored exactly with small rank, if there are many small samples, the rank of the sample matrix, $S$, will be large, and its singular values will not 
 
