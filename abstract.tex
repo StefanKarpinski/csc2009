@@ -27,7 +27,7 @@ Mixture modeling expresses probability densities as convex combinations of const
 \end{align}
 Here $q_i$ and $p_j$ are density functions, and $w_{ij}$ are nonnegative weights, summing to unity for each $i$.
 In classical mixture modeling, the constituent density functions, $p_j$, are assumed to be from some class of parametric distributions.
-Various well established algorithms, using expectation minimization (\caps{EM}), can optimally recover the weights, $w_{ij}$, given an observed sample of values from the $q_i$ distributions~\cite{McLachlan00}.
+Various well established algorithms, typically using expectation minimization, can optimally recover the weights, $w_{ij}$, given an observed sample of values from the $q_i$ distributions~\cite{McLachlan00}.
 
 In certain settings, however, mixture modeling is desirable, but the constituent distributions are neither known in advance, nor can they be assumed to be parametric.
 In this work, we demonstrate how, for discrete event spaces, nonnegative matrix factorization (\caps{NMF}) can be effectively used to simultaneously recover both weights and constituent distributions, given a large collection of variably-sized samples from mixtures.
@@ -85,9 +85,9 @@ We will demonstrate using simulated data why both of these properties make facto
 To evaluate the effectiveness of \caps{NMF} techniques for discrete mixture model recovery, we use synthetic data, since otherwise the true factors are unknown.
 To generate synthetic data, we use saw-tooth patterns as constituent distributions, densities of which are shown in Figure~1.
 These distributions are visually distinctive and not well-approximated by standard parametric distributions.
-The Pareto distribution is the classic heavy-tailed distribution, and has been shown to describe the distribution of flow sizes in several network trace studies.
+The Pareto distribution is the classic heavy-tailed distribution, and describes the distribution of flow sizes in network trace studies~\cite{Hernandez06:spatio-temporal-modeling,Karaliopoulos07}.
 Accordingly, we choose sample sizes for each synthetic mixture from a Pareto distribution.
-Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed. Figure 2 is a matrix plot of sample rows of randomly generated weights.
+Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,follow a power law. Figure 2 is a matrix plot of sample rows of randomly generated weights.
 % (transposed to save space).
 
 \begin{figure}[t]
@@ -112,7 +112,7 @@ Our synthetic weight matrices are also generated such that the prevalences of th
 \end{figure}
 
 In short, we find that none of the existing \caps{NMF} algorithms can accurately recover the constituent distributions used to generate synthetic mixtures.
-Recovered $P_*$ distributions for Lee and Seung's algorithms~\cite{Lee01}, and Kim and Park's alternating nonnegative least squares (\caps{ANLS}) algorithm~\cite{Kim08} are shown in Figure~3, dramatically illustrating their failure to accurately recover the original distributions.
+Recovered $P_*$ distributions for Lee and Seung's algorithms~\cite{Lee01}, and Kim and Park's alternating nonnegative least squares (\caps{ANLS}) algorithm~\cite{Kim08} are shown in Figure~3, dramatically illustrating their failure to accurately reconstruct the original distributions.
 It is well known that these algorithms may not converge to a globally optimum factorization.
 The quality of the end result is largely dependent on the matrices used to initialize the algorithms, which typically are random nonnegative matrices.
 To find a better factorization, we use a variation of the most promising initialization technique proposed by Langville~et~al.~\cite{Langville06}:
@@ -126,7 +126,7 @@ Figure~4 shows that even without any further refinement, this initialization tec
 Although this recovery appears visually close to optimal, there are differences in shape which limit the quality of the approximation $W_0 P_0$.
 Intuitively, this initialization sits on a ridge above a deep valley, where the perfect recovery lies.
 If care is not taken, however, the \caps{NMF} algorithms may descend the wrong side of the ridge, moving away from the optimal recovery rather than toward it.
-This is precisely what happens when any of these algorithms are applied to $W_0,P_0$ alone, as is shown in Figure~5.
+This is precisely what happens when any of these algorithms are applied na\"ively but initialized with $W_0$ and $P_0$, shown in Figure~5.
 
 \begin{figure}[t]
 \begin{center}
@@ -157,7 +157,7 @@ In real situations, where discrete mixture models must be recovered from experim
 Only a finite sample of values from each $q_i$ distribution are observed.
 These samples may be of different sizes, and in many situations, the vast majority of the samples are very small, many even consisting of only a single value.
 Can the basis matrix, $P$, still be recovered under such circumstances?
-Our meta-algorithm can accurately recover $P$, when applied to appropriate estimates of $Q$.
+Our meta-algorithm can accurately recover $P$ from sampled data when applied to appropriate estimates of $Q$.
 
 The simplest estimate of $Q$ is based on the sample histogram matrix, $H$:
 $H_{ik}$ is the number times the value $k$ was sampled from the distribution $q_i$.
@@ -165,13 +165,13 @@ We can approximate $Q$ by the row-stochasticized version of $H$, where each row 
 call this matrix $C$.
 If nothing else was known about $Q$, we could not do much better than this approximation.
 We know, however, that $Q$ has rank $r$:
-we can use \caps{SVD} to find the best rank $r$ approximation of $H$.
-Why use the \caps{SVD} approximation of $H$ rather than of $C$?
-By applying the \caps{SVD} to $H$, we are giving each row weight proportional to its sample size in computing our approximation, thus giving more weight to more precisely known rows.
-The \caps{SVD} approximation matrix may have negative values, since we know $Q$ has none, we force these to be zero.\footnote{This may cause the approximation to become no longer rank $r$. It will, however, remain nearly rank $r$, in the sense that it will have $r$ large singular values and the rest much smaller.}
-Let this nonnegative, nearly rank $r$ approximation of $H$ be $A$ and $R$ its row-stochastization.
+we find the best rank $r$ approximation of $H$ using \caps{SVD}.
+Why apply \caps{SVD} to $H$ rather than $C$?
+By using \caps{SVD} on $H$, we are giving each row weight proportional to its sample size in computing our approximation, thus giving more impact to more precisely known rows.
+The \caps{SVD} approximation matrix may have negative values, since we know $Q$ has none, we truncate these at zero.\footnote{Projection into the nonnegative orthant may cause the approximation to become no longer rank $r$. It will, however, remain nearly rank $r$, in the sense that it will have $r$ large singular values and the rest much smaller.}
+Let $A$ denote this nonnegative, nearly rank $r$ approximation of $H$, and let be $R$ its row-stochastization.
 
-To successfully apply our meta-algorithm to sampled data, the steps must be applied as follows:
+To successfully apply our meta-algorithm to sampled data, the following steps may be applied:
 \begin{enumerate}
   \item Compute $W_0,P_0$ from \caps{SVD}/$k$-means on $R$.
   \item Iterate \caps{ANLS} on $R$ starting with $W_0,P_0$.
@@ -179,7 +179,8 @@ To successfully apply our meta-algorithm to sampled data, the steps must be appl
   \item Iterate Kullback-Leibler on $H$ starting with $W_*,P_*$.
   \item Iterate Euclidean on $H$ starting with $W_*,P_*$.
 \end{enumerate}
-This meta-algorithm can recover $P$ very well, even when $Q$ is sampled with infinite variance, and when the prevalences of constituent distributions follow a power law. Accurate recovery from sampled data is shown in Figure~6.
+This meta-algorithm can recover $P$ accurately, even when $Q$ is sampled with infinite variance (heavy-tailed) and prevalences of constituent distributions follow a power law.
+An accurate recovery from sampled data is shown in Figure~6.
 
 \begin{figure}[t]
 \begin{center}
