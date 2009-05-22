@@ -157,11 +157,11 @@ In real situations, where discrete mixture models must be recovered from experim
 Only a finite sample of values from each $q_i$ distribution are observed.
 These samples may be of different sizes, and in many situations, the vast majority of the samples are very small, many even consisting of only a single value.
 Can the basis matrix, $P$, still be recovered under such circumstances?
-We show that our meta-algorithm can, when applied to appropriate estimates of $Q$.
+Our meta-algorithm can accurately recover $P$, when applied to appropriate estimates of $Q$.
 
-The simplest estimate of $Q$ is based on the sample histogram matrix, $H$.
-Let $H_{ik}$ be the number times the value $k$ was sampled from the distribution $q_i$.
-We can approximate $Q$ by the row-stochasticized version of $H$, where each row is divided by the its sum;
+The simplest estimate of $Q$ is based on the sample histogram matrix, $H$:
+$H_{ik}$ is the number times the value $k$ was sampled from the distribution $q_i$.
+We can approximate $Q$ by the row-stochasticized version of $H$, where each row is divided by its sum;
 call this matrix $C$.
 If nothing else was known about $Q$, we could not do much better than this approximation.
 We know, however, that $Q$ has rank $r$:
@@ -179,7 +179,7 @@ To successfully apply our meta-algorithm to sampled data, the steps must be appl
   \item Iterate Kullback-Leibler on $H$ starting with $W_*,P_*$.
   \item Iterate Euclidean on $H$ starting with $W_*,P_*$.
 \end{enumerate}
-This meta-algorithm can recover $P$ very well, even when $Q$ is sampled with infinite variance of sample sizes, and when the prevalence of each rows of $P$ follow a power law (i.e. heavy tailed). The recovery is shown in Figure~6.
+This meta-algorithm can recover $P$ very well, even when $Q$ is sampled with infinite variance, and when the prevalence constituent distributions is heavy tailed. Accurate recovery from sampled data is shown in Figure~6.
 
 \begin{figure}[t]
 \begin{center}
