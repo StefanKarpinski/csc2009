@@ -27,7 +27,7 @@ Mixture modeling expresses probability densities as convex combinations of const
 \end{align}
 Here $q_i$ and $p_j$ are density functions, and $w_{ij}$ are nonnegative weights, summing to unity for each $i$.
 In classical mixture modeling, the constituent density functions, $p_j$, are assumed to be from some class of parametric distributions.
-Various well established algorithms, using expectation minimization (\caps{EM}), can optimally recover the weights, $w_{ij}$, given an observed sample of values from $q_i$.%~\cite{MMEM}
+Various well established algorithms, using expectation minimization (\caps{EM}), can optimally recover the weights, $w_{ij}$, given an observed sample of values from the $q_i$ distributions~\cite{McLachlan00}.
 
 In certain settings, however, mixture modeling is desirable, but the constituent distributions are neither known in advance, nor can they be assumed to be parametric.
 In this work, we demonstrate how, for discrete event spaces, nonnegative matrix factorization (\caps{NMF}) can be effectively used to simultaneously recover both weights and constituent distributions, given a large collection of variably-sized samples from mixtures.
