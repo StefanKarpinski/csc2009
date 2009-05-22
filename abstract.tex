@@ -98,7 +98,16 @@ Our synthetic weight matrices are also generated such that the prevalences of th
 \subfloat[Kim \& Park, ANLS Algorithm]
 {\includegraphics[width=3.5in]{synth/Q_anls}}
 \end{center}
-\caption{Recovered $P$ distributions for various standard \caps{NMF} algorithms, using random factors for algorithm initialization.}
+\caption{Recovered $P$ distributions for standard \caps{NMF} algorithms, with random initialization and perfect knowledge of $Q$.}
+\end{figure}
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=3.5in]{synth/Q_ki}
+\end{center}
+\vspace{-0.7em}
+\caption{$P_0$ computed using SVD/$k$-means initialization.}
+\vspace{-0.5em}
 \end{figure}
 
 In our summary, we find that none of the existing \caps{NMF} algorithms, can accurately recover the constituent distributions used to generate synthetic mixtures.
@@ -113,18 +122,27 @@ To address this problem, we use a variation of the most promising initialization
   \item Let $P_0$ be nonnegative minimizing $\norm{Q - W_0 P_0}_F$.
 \end{enumerate}
 Figure~4 shows that even without any further refinement, this initialization technique already recovers the overall shape of $P$ remarkably well.
+Although this recovery appears visually close to optimal, there are differences in shape which limit the quality of the approximation $W_0 P_0$.
+Intuitively, however, this initialization sits on a ridge above a deep basin, where the perfect recovery lies.
+If care is not taken, however, \caps{NMF} algorithms may descend the wrong side of the ridge, moving away from the optimal recovery rather than toward it.
 
 \begin{figure}[t]
-\fig{synthetic-basis}
 \begin{center}
-\includegraphics[width=3.5in]{synth/Q_ki}
+\includegraphics[width=3.5in]{synth/Q_nmf}
 \end{center}
 \vspace{-0.7em}
-\caption{Recovered $P$ using SVD/$k$-means initialization alone.}
+\caption{Perfect recovery of $P$ using our meta-algorithm.}
 \vspace{-0.5em}
 \end{figure}
 
-% The first challenge is troubling because even if $Q$ can be factored exactly with small rank, if there are many small samples, the rank of the sample matrix, $S$, will be large, and its singular values will not 
+Through a combination of mathematical insight, intuition and trial and error, we have found that applying the \caps{ANLS} algorithm for a few dozens of iterations, followed by the Kullback-Leibler algorithm, followed finally by the Euclidean algorithm results in arbitrarily perfect recovery, limited only by how many iterations of the Euclidean algorithm one is willing to wait for. The results of this meta-algorithm are shown in Figure~5.
+
+The above results all assume perfect knowledge of $Q$.
+In real situations, where discrete mixture models must be recovered from experimental data, there is highly imperfect knowledge of $Q$.
+Only a finite sample of values from each $q_i$ distribution are observed.
+These samples may be of different sizes, and if in many situations, the vast majority of the samples are very small, many even consisting of only a single value.
+Can the basis matrix, $P$, still be recovered under such circumstances?
+In fact, the meta-algorithm described above does recover $P$ quite well, so long as care is taken in scaling the rows of the matrices to which the \caps{NMF} algorithms are applied.
 
 \bibliography{IEEE,references}
 
