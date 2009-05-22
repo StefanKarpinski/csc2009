@@ -13,6 +13,8 @@ University of California, Santa Barbara \vspace{0.35em}\\
 \textit{\{sgk,gilbert,ebelding\}@cs.ucsb.edu}
 }
 
+\bibliographystyle{IEEEtran}
+
 \newcommand{\figurename}{Figure}
 \newcommand{\tablename}{Table}
 
@@ -52,7 +54,7 @@ Several difficulties remain, however:
 \end{enumerate}
 This list is not exhaustive, and we will address and discuss several further difficulties.
 
-Our motivating application is mixture modeling for traces of network flows, whose distributions of packet sizes and inter-packet intervals can be effectively modeled as discretized mixture models, using \caps{NMF}~\cite{Karpinski:2008}.
+Our motivating application is mixture modeling for traces of network flows, whose distributions of packet sizes and inter-packet intervals can be effectively modeled as discretized mixture models, using \caps{NMF}~\cite{Karpinski08}.
 In this setting, there are several particularly challenging aspects:
 \begin{enumerate}
   \item The distribution of sample sizes is heavy-tailed, having a few very large samples, and many very small samples, with most flows having only one to three packets.
@@ -76,7 +78,7 @@ We will demonstrate using simulated data why both of these properties make facto
 \includegraphics[width=3.5in]{synth/weights}
 \end{center}
 \vspace{-0.7em}
-\caption{Transposed matrix plot of 200 sample random weights.}
+\caption{Transposed matrix plot of 100 sample random weights.}
 \vspace{-0.5em}
 \end{figure}
 
@@ -84,8 +86,12 @@ For synthetic data, we use saw-tooth patterns as constituent distributions, as i
 These distributions are visually distinctive, and not well-approximated by standard parametric distributions.
 The Pareto distribution is the classic heavy-tailed distribution, and has been shown to describe the distribution of flow sizes in several network trace studies.
 Accordingly, we choose sample sizes for each synthetic mixture from a Pareto distribution.
-Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed. A matrix plot of 200 rows of randomly generated weights are shown in Figure~2 (transposed to save space).
+Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed. Figure 2 is a matrix plot of sample rows of randomly generated weights, transposed to save space.
+
+In summary, we find that none of the standard \caps{NMF} algorithms, such as Lee and Seung's multiplicative update rules~\cite{Lee01}, or Kim and Park's alternating nonnegative least squares (\caps{ANLS}) algorithm~\cite{Kim08}.
 
 % The first challenge is troubling because even if $Q$ can be factored exactly with small rank, if there are many small samples, the rank of the sample matrix, $S$, will be large, and its singular values will not 
+
+\bibliography{IEEE,references}
 
 \end{document}
