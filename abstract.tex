@@ -150,7 +150,7 @@ This is precisely what happens when any of these algorithms are applied to $W_0 
 \end{figure}
 
 Through a combination of intuition and trial and error, we have found that applying the \caps{ANLS} algorithm for a few dozens of iterations, followed by the Kullback-Leibler algorithm, followed finally by the Euclidean algorithm results in perfect recovery, with error limited only by how many iterations of the Euclidean algorithm one is willing to wait for.
-The results of this meta-algorithm are shown in Figure~6.
+The recovery result of this meta-algorithm are shown in Figure~6.
 
 The above results all assume perfect knowledge of $Q$.
 In real situations, where discrete mixture models must be recovered from experimental data, there is highly imperfect knowledge of $Q$.
@@ -164,12 +164,12 @@ Let $H_{ik}$ be the number times the value $k$ was sampled from the distribution
 We can approximate $Q$ by the row-stochasticized version of $H$, where each row is divided by the its sum;
 call this matrix $C$.
 If nothing else was known about $Q$, we could not do much better than this approximation.
-We know, however, that $Q$ has rank $r$.
-We can use the \caps{SVD} to find the best rank $r$ approximation of $H$.
+We know, however, that $Q$ has rank $r$:
+we can use \caps{SVD} to find the best rank $r$ approximation of $H$.
 Why use the \caps{SVD} approximation of $H$ rather than of $C$?
 By applying the \caps{SVD} to $H$, we are giving each row weight proportional to its sample size in computing our approximation, thus giving more weight to more precisely known rows.
 The \caps{SVD} approximation matrix may have negative values, since we know $Q$ has none, we force these to be zero.\footnote{This may cause the approximation to become no longer rank $r$. It will, however, remain nearly rank $r$, in the sense that it will have $r$ large singular values and the rest much smaller.}
-Call this nonnegative, nearly rank-$r$ approximation of $H$, $A$.
+Call this nonnegative, nearly rank $r$ approximation of $H$, $A$.
 
 % Intuitively, since the sum of each row of $H$ is equal to its sample size, that row's weight in determining the best approximation is proportional to its sample size.
 % Therefore, we want to do our approximation giving more weight to rows with more data.
