@@ -54,11 +54,11 @@ Several difficulties remain, however:
 \end{enumerate}
 This list is not exhaustive, and we will address and discuss several further difficulties.
 
-Our motivating application is mixture modeling for traces of network flows, whose distributions of packet sizes and inter-packet intervals can be effectively modeled as discretized mixture models, using \caps{NMF}~\cite{Karpinski08}.
+Our motivating application is mixture modeling for traces of network flows, whose distributions of packet sizes and inter-packet intervals seem to be effectively modeled as discretized mixture models, using \caps{NMF}~\cite{Karpinski08}.
 In this setting, there are several particularly challenging aspects:
 \begin{enumerate}
-  \item The distribution of sample sizes is heavy-tailed, having a few very large samples, and many very small samples, with most flows having only one to three packets.
-  \item The constituent distributions are not uniformly represented: the most prevalent distribution has much larger weights on average than the next, and so on.
+  \item The distribution of sample sizes is heavy-tailed, having a few very large samples, and many very small samples;
+  \item The constituent distributions are not uniformly represented: the most prevalent distribution has much larger average weights than the next, and so on.
 \end{enumerate}
 We will demonstrate using simulated data why both of these properties make factor recovery particularly difficult.
 
@@ -78,17 +78,18 @@ We will demonstrate using simulated data why both of these properties make facto
 \includegraphics[width=3.5in]{synth/weights}
 \end{center}
 \vspace{-0.7em}
-\caption{Transposed matrix plot of 100 sample random weights.}
+\caption{Transposed matrix plot of 100 sample weight vectors.}
 \vspace{-0.5em}
 \end{figure}
 
-For synthetic data, we use saw-tooth patterns as constituent distributions, as illustrated in Figure~1.
-These distributions are visually distinctive, and not well-approximated by standard parametric distributions.
+To evaluate the effectiveness of \caps{NMF} techniques for discrete mixture model recovery, we must use synthetic data, since otherwise the true factors are unknown.
+To generate synthetic data, we use saw-tooth patterns as constituent distributions, \caps{PDF}s of which are shown in Figure~1.
+These distributions are visually distinctive and not well-approximated by standard parametric distributions.
 The Pareto distribution is the classic heavy-tailed distribution, and has been shown to describe the distribution of flow sizes in several network trace studies.
 Accordingly, we choose sample sizes for each synthetic mixture from a Pareto distribution.
-Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed. Figure 2 is a matrix plot of sample rows of randomly generated weights, transposed to save space.
+Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed. Figure 2 is a matrix plot of sample rows of randomly generated weights (transposed to save space).
 
-In summary, we find that none of the standard \caps{NMF} algorithms, such as Lee and Seung's multiplicative update rules~\cite{Lee01}, or Kim and Park's alternating nonnegative least squares (\caps{ANLS}) algorithm~\cite{Kim08}.
+In summary, we find that none of the standard \caps{NMF} algorithms, such as Lee and Seung's multiplicative update rules~\cite{Lee01}, or Kim and Park's alternating nonnegative least squares (\caps{ANLS}) algorithm~\cite{Kim08}, accurately recover the constituent distributions used to generate synthetic mixtures.
 
 % The first challenge is troubling because even if $Q$ can be factored exactly with small rank, if there are many small samples, the rank of the sample matrix, $S$, will be large, and its singular values will not 
 
