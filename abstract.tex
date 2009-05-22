@@ -27,7 +27,7 @@ Mixture modeling expresses probability densities as convex combinations of const
 \end{align}
 Here $q_i$ and $p_j$ are density functions, and $w_{ij}$ are nonnegative weights, summing to unity for each $i$.
 In classical mixture modeling, the constituent density functions, $p_j$, are assumed to be from some class of parametric distributions.
-Various well established algorithms, using expectation minimization (\caps{EM}), can optimally recover the weights, $w_{ij}$, given an observed sample of values from $q_i$.
+Various well established algorithms, using expectation minimization (\caps{EM}), can optimally recover the weights, $w_{ij}$, given an observed sample of values from $q_i$~\cite{MMEM}.
 
 In certain settings, however, mixture modeling is desirable, but the constituent distributions are neither known in advance, nor can they be assumed to be parametric.
 In this work, we demonstrate how, for discrete event spaces, nonnegative matrix factorization (\caps{NMF}) can be effectively used to simultaneously recover both weights and constituent distributions, given a large collection of variably-sized samples from mixtures.
@@ -48,11 +48,11 @@ On the other hand, any exact factorization of $Q$, is an equally valid mixture m
 Since a variety of \caps{NMF} algorithms have been proposed, this problem is partially solved.
 Several difficulties remain, however:
 \begin{enumerate}
+  \item \caps{NMF} is known to be \caps{NP}-hard; thus, all efficient algorithms are heuristic, and may not yield adequate results;
   \item $Q$ is not known exactly, only a finite sample for each distribution row of $Q$ is observed;
-  \item The samples for the rows may not have uniform size;
-  \item \caps{NMF} is known to be \caps{NP}-hard; thus, all efficient algorithms are heuristic, and may not yield adequate results.
+  \item The samples for the rows may not have uniform size.
 \end{enumerate}
-This list is not exhaustive, and we will address and discuss several further difficulties.
+This list is not exhaustive, and we will address and discuss other challenges as well.
 
 Our motivating application is mixture modeling for traces of network flows, whose distributions of packet sizes and inter-packet intervals seem to be effectively modeled as discretized mixture models, using \caps{NMF}~\cite{Karpinski08}.
 In this setting, there are several particularly challenging aspects:
@@ -79,15 +79,16 @@ We will demonstrate using simulated data why both of these properties make facto
 \end{center}
 \vspace{-0.7em}
 \caption{Transposed matrix plot of 100 sample weight vectors.}
-\vspace{-0.5em}
+\vspace{-0.3em}
 \end{figure}
 
 To evaluate the effectiveness of \caps{NMF} techniques for discrete mixture model recovery, we use synthetic data, since otherwise the true factors are unknown.
-To generate synthetic data, we use saw-tooth patterns as constituent distributions, \caps{PDF}s of which are shown in Figure~1.
+To generate synthetic data, we use saw-tooth patterns as constituent distributions, densities of which are shown in Figure~1.
 These distributions are visually distinctive and not well-approximated by standard parametric distributions.
 The Pareto distribution is the classic heavy-tailed distribution, and has been shown to describe the distribution of flow sizes in several network trace studies.
 Accordingly, we choose sample sizes for each synthetic mixture from a Pareto distribution.
-Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed. Figure 2 is a matrix plot of sample rows of randomly generated weights (transposed to save space).
+Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed. Figure 2 is a matrix plot of sample rows of randomly generated weights.
+% (transposed to save space).
 
 \begin{figure}[t]
 \begin{center}
@@ -107,14 +108,14 @@ Our synthetic weight matrices are also generated such that the prevalences of th
 \end{center}
 \vspace{-0.7em}
 \caption{$P_0$ computed using SVD/$k$-means initialization.}
-\vspace{-0.5em}
+\vspace{-1em}
 \end{figure}
 
-In our summary, we find that none of the existing \caps{NMF} algorithms, can accurately recover the constituent distributions used to generate synthetic mixtures.
-The recovered rows of $P$ for Lee and Seung's multiplicative update algorithms~\cite{Lee01}, and Kim and Park's alternating nonnegative least squares (\caps{ANLS}) algorithm~\cite{Kim08} are shown in Figure~3, dramatically illustrating their failure to recover the original distributions in Figure~1.
-It is well known that these algorithms do not find a globally optimum factorization, but rather converge to a local optimum.
-The quality of the end result is largely dependent on the initial conditions of the algorithm, which in these instances, were the typical random nonnegative matrices.
-To address this problem, we use a variation of the most promising initialization technique proposed by Langville~et~al.~\cite{Langville07}:
+In short, we find that none of the existing \caps{NMF} algorithms can accurately recover the constituent distributions used to generate synthetic mixtures.
+Recoveries of $P$ for Lee and Seung's multiplicative update algorithms~\cite{Lee01}, and Kim and Park's alternating nonnegative least squares (\caps{ANLS}) algorithm~\cite{Kim08} are shown in Figure~3, dramatically illustrating their failure to recover the original distributions in Figure~1.
+It is well known that these algorithms may not converge to a globally optimum factorization.
+The quality of the end result is largely dependent on the initial conditions of the algorithms, which typically random nonnegative matrices.
+To find a better factorization, we use a variation of the most promising initialization technique proposed by Langville~et~al.~\cite{Langville07}:
 \begin{enumerate}
   \item Let $Q=USV'$, the singular value decomposition (\caps{SVD}),
   \item Use $k$-means to find $r$ clusters of columns in $V$,
@@ -123,8 +124,21 @@ To address this problem, we use a variation of the most promising initialization
 \end{enumerate}
 Figure~4 shows that even without any further refinement, this initialization technique already recovers the overall shape of $P$ remarkably well.
 Although this recovery appears visually close to optimal, there are differences in shape which limit the quality of the approximation $W_0 P_0$.
-Intuitively, however, this initialization sits on a ridge above a deep basin, where the perfect recovery lies.
-If care is not taken, however, \caps{NMF} algorithms may descend the wrong side of the ridge, moving away from the optimal recovery rather than toward it.
+Intuitively, this initialization sits on a ridge above a deep valley, where the perfect recovery lies.
+If care is not taken, however, the \caps{NMF} algorithms may descend the wrong side of the ridge, moving away from the optimal recovery rather than toward it.
+This is precisely what happens when any of these algorithms are applied to $W_0 P_0$ alone, as can be seen in Figure~5.
+
+\begin{figure}[t]
+\begin{center}
+\subfloat[Lee \& Seung, Euclidean Algorithm]
+{\includegraphics[width=3.5in]{synth/Q_euclidean_ki}}
+\subfloat[Lee \& Seung, Kullback-Leibler Algorithm]
+{\includegraphics[width=3.5in]{synth/Q_divergence_ki}}
+\subfloat[Kim \& Park, ANLS Algorithm]
+{\includegraphics[width=3.5in]{synth/Q_anls_ki}}
+\end{center}
+\caption{Recovered $P$ distributions for standard \caps{NMF} algorithms, with \caps{SVD}/$k$-means initialization and perfect knowledge of $Q$.}
+\end{figure}
 
 \begin{figure}[t]
 \begin{center}
@@ -132,17 +146,50 @@ If care is not taken, however, \caps{NMF} algorithms may descend the wrong side 
 \end{center}
 \vspace{-0.7em}
 \caption{Perfect recovery of $P$ using our meta-algorithm.}
-\vspace{-0.5em}
+\vspace{-1em}
 \end{figure}
 
-Through a combination of mathematical insight, intuition and trial and error, we have found that applying the \caps{ANLS} algorithm for a few dozens of iterations, followed by the Kullback-Leibler algorithm, followed finally by the Euclidean algorithm results in arbitrarily perfect recovery, limited only by how many iterations of the Euclidean algorithm one is willing to wait for. The results of this meta-algorithm are shown in Figure~5.
+Through a combination of intuition and trial and error, we have found that applying the \caps{ANLS} algorithm for a few dozens of iterations, followed by the Kullback-Leibler algorithm, followed finally by the Euclidean algorithm results in perfect recovery, with error limited only by how many iterations of the Euclidean algorithm one is willing to wait for.
+The results of this meta-algorithm are shown in Figure~6.
 
 The above results all assume perfect knowledge of $Q$.
 In real situations, where discrete mixture models must be recovered from experimental data, there is highly imperfect knowledge of $Q$.
 Only a finite sample of values from each $q_i$ distribution are observed.
-These samples may be of different sizes, and if in many situations, the vast majority of the samples are very small, many even consisting of only a single value.
+These samples may be of different sizes, and in many situations, the vast majority of the samples are very small, many even consisting of only a single value.
 Can the basis matrix, $P$, still be recovered under such circumstances?
-In fact, the meta-algorithm described above does recover $P$ quite well, so long as care is taken in scaling the rows of the matrices to which the \caps{NMF} algorithms are applied.
+We show that our meta-algorithm can, when applied to appropriate estimates of $Q$.
+
+The simplest estimate of $Q$ is based on the sample histogram matrix, $H$.
+Let $H_{ik}$ be the number times the value $k$ was sampled from the distribution $q_i$.
+We can approximate $Q$ by the row-stochasticized version of $H$, where each row is divided by the its sum;
+call this matrix $C$.
+If nothing else was known about $Q$, we could not do much better than this approximation.
+We know, however, that $Q$ has rank $r$.
+We can use the \caps{SVD} to find the best rank $r$ approximation of $H$.
+Why use the \caps{SVD} approximation of $H$ rather than of $C$?
+By applying the \caps{SVD} to $H$, we are giving each row weight proportional to its sample size in computing our approximation, thus giving more weight to more precisely known rows.
+The \caps{SVD} approximation matrix may have negative values, since we know $Q$ has none, we force these to be zero.\footnote{This may cause the approximation to become no longer rank $r$. It will, however, remain nearly rank $r$, in the sense that it will have $r$ large singular values and the rest much smaller.}
+Call this nonnegative, nearly rank-$r$ approximation of $H$, $A$.
+
+% Intuitively, since the sum of each row of $H$ is equal to its sample size, that row's weight in determining the best approximation is proportional to its sample size.
+% Therefore, we want to do our approximation giving more weight to rows with more data.
+
+
+
+% Unfortunately, 
+% Moreover, the error of the estimate does not follow the typical model of a noise matrix added to $Q$.
+% 
+% 
+% Can the basis matrix, $P$, still be recovered under such circumstances?
+% 
+% In fact, the meta-algorithm described above does recover $P$ quite well, so long as care is taken in scaling the rows of the matrices to which the \caps{NMF} algorithms are applied.
+% The scaling issue becomes relevant because when each row of $Q$ is estimated from a different number of sample values, each estimate has different error characteristics.
+% 
+% The errors of each entries in the same row
+% Specifically,
+% \begin{enumerate}
+%   \item \caps{SVD}/$k$-means initialization mu
+% \end{enumerate}
 
 \bibliography{IEEE,references}
 
