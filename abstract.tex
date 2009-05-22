@@ -61,6 +61,7 @@ In this setting, there are several particularly challenging aspects:
 We will demonstrate using simulated data why both of these properties make factor recovery particularly difficult.
 
 \begin{figure}[b]
+\fig{synthetic-basis}
 \begin{center}
 \includegraphics[width=3.5in]{synth/test}
 \end{center}
@@ -69,11 +70,21 @@ We will demonstrate using simulated data why both of these properties make facto
 \vspace{-0.5em}
 \end{figure}
 
-For synthetic data, we use saw-tooth patterns as constituent distributions.
+\begin{figure}[b]
+\fig{synthetic-weights}
+\begin{center}
+\includegraphics[width=3.5in]{synth/weights}
+\end{center}
+\vspace{-0.7em}
+\caption{Transposed matrix plot of 200 sample random weights.}
+\vspace{-0.5em}
+\end{figure}
+
+For synthetic data, we use saw-tooth patterns as constituent distributions, as illustrated in Figure~1.
 These distributions are visually distinctive, and not well-approximated by standard parametric distributions.
 The Pareto distribution is the classic heavy-tailed distribution, and has been shown to describe the distribution of flow sizes in several network trace studies.
 Accordingly, we choose sample sizes for each synthetic mixture from a Pareto distribution.
-Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed.
+Our synthetic weight matrices are also generated such that the prevalences of the component distributions\,---\,i.e. the column sums of $W$---\,are Pareto-distributed. A matrix plot of 200 rows of randomly generated weights are shown in Figure~2 (transposed to save space).
 
 % The first challenge is troubling because even if $Q$ can be factored exactly with small rank, if there are many small samples, the rank of the sample matrix, $S$, will be large, and its singular values will not 
 
