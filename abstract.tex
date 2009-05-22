@@ -98,12 +98,31 @@ Our synthetic weight matrices are also generated such that the prevalences of th
 \subfloat[Kim \& Park, ANLS Algorithm]
 {\includegraphics[width=3.5in]{synth/Q_anls}}
 \end{center}
-\caption{Recovered rows for various standard \caps{NMF} algorithms, using random factors for algorithm initialization.}
+\caption{Recovered $P$ distributions for various standard \caps{NMF} algorithms, using random factors for algorithm initialization.}
 \end{figure}
 
 In our summary, we find that none of the existing \caps{NMF} algorithms, can accurately recover the constituent distributions used to generate synthetic mixtures.
 The recovered rows of $P$ for Lee and Seung's multiplicative update algorithms~\cite{Lee01}, and Kim and Park's alternating nonnegative least squares (\caps{ANLS}) algorithm~\cite{Kim08} are shown in Figure~3, dramatically illustrating their failure to recover the original distributions in Figure~1.
+It is well known that these algorithms do not find a globally optimum factorization, but rather converge to a local optimum.
+The quality of the end result is largely dependent on the initial conditions of the algorithm, which in these instances, were the typical random nonnegative matrices.
+To address this problem, we use a variation of the most promising initialization technique proposed by Langville~et~al.~\cite{Langville07}:
+\begin{enumerate}
+  \item Let $Q=USV'$, the singular value decomposition (\caps{SVD}),
+  \item Use $k$-means to find $r$ clusters of columns in $V$,
+  \item Let $W_0$ be corresponding column centroids in $Q$,
+  \item Let $P_0$ be nonnegative minimizing $\norm{Q - W_0 P_0}_F$.
+\end{enumerate}
+Figure~4 shows that even without any further refinement, this initialization technique already recovers the overall shape of $P$ remarkably well.
 
+\begin{figure}[t]
+\fig{synthetic-basis}
+\begin{center}
+\includegraphics[width=3.5in]{synth/Q_ki}
+\end{center}
+\vspace{-0.7em}
+\caption{Recovered $P$ using SVD/$k$-means initialization alone.}
+\vspace{-0.5em}
+\end{figure}
 
 % The first challenge is troubling because even if $Q$ can be factored exactly with small rank, if there are many small samples, the rank of the sample matrix, $S$, will be large, and its singular values will not 
 
