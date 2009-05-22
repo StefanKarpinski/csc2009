@@ -168,7 +168,9 @@ We know, however, that $Q$ has rank $r$:
 we find the best rank $r$ approximation of $H$ using \caps{SVD}.
 Why apply \caps{SVD} to $H$ rather than $C$?
 By using \caps{SVD} on $H$, we are giving each row weight proportional to its sample size in computing our approximation, thus giving more impact to more precisely known rows.
-The \caps{SVD} approximation matrix may have negative values, since we know $Q$ has none, we truncate these at zero.\footnote{Projection into the nonnegative orthant may cause the approximation to become no longer rank $r$. It will, however, remain nearly rank $r$, in the sense that it will have $r$ large singular values and the rest much smaller.}
+The \caps{SVD} approximation matrix may have negative values;
+since we know $Q$ has none, we truncate these to zero.%
+\footnote{Projection into the nonnegative orthant may cause the approximation to become no longer rank $r$. It will, however, remain nearly rank $r$, in the sense that it will have $r$ large singular values and the rest much smaller.}
 Let $A$ denote this nonnegative, nearly rank $r$ approximation of $H$, and let be $R$ its row-stochastization.
 
 To successfully apply our meta-algorithm to sampled data, the following steps may be applied:
